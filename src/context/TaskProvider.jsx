@@ -43,17 +43,12 @@ const TaskProvider = ({ children }) => {
   // Fetch logged-in user's tasks
   const fetchUserTasks = async () => {
     try {
-      const token = localStorage.getItem('token');
-    if (!token) {
-      return { success: false, error: "No authentication token found" };
-    }
-
+    
       const response = await axios.get(`${apiUrl}/api/task/getusertask`, {
         headers: {
           "Content-Type": "application/json",
           "auth-token": localStorage.getItem("token")
         },
-        withCredentials: true
       });
       
       console.log('user task Response:', response.data);

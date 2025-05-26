@@ -86,79 +86,41 @@ const RegisterPage = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   if (validateForm()) {
-  //     setLoading(true);
-  //     try {
-  //       const response = await fetch(`${apiUrl}/api/auth/signup`, {
-  //         method: "POST",
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //         },
-  //         body: JSON.stringify({
-  //           name: credentials.name,
-  //           email: credentials.email,
-  //           password: credentials.password,
-  //         }),
-  //       });
-
-  //       const data = await response.json();
-  //       if (data?.authToken) {
-  //         localStorage.setItem("token", data.authToken);
-  //         toast.success("Registration successful!");
-  //         navigate("/login");
-  //       } else if (data?.error) {
-  //         toast.error(data.error);
-  //       } else {
-  //         toast.error("Registration failed. Please try again.");
-  //       }
-  //     } catch (error) {
-  //       console.error("Error:", error);
-  //       toast.error("An unexpected error occurred");
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   }
-  // };
-
-
   const handleSubmit = async (e) => {
-  e.preventDefault();
-  if (validateForm()) {
-    setLoading(true);
-    try {
-      const response = await axios.post(
-        `${apiUrl}/api/auth/signup`,
-        {
-          name: credentials.name,
-          email: credentials.email,
-          password: credentials.password,
-        },
-        {
+    e.preventDefault();
+    if (validateForm()) {
+      setLoading(true);
+      try {
+        const response = await fetch(`${apiUrl}/api/auth/signup`, {
+          method: "POST",
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
-          withCredentials: true
-        }
-      );
+          body: JSON.stringify({
+            name: credentials.name,
+            email: credentials.email,
+            password: credentials.password,
+          }),
+        });
 
-      if (response.data?.authToken) {
-        localStorage.setItem("token", response.data.authToken);
-        toast.success("Registration successful!");
-        navigate("/login");
-      } else {
-        toast.error("Registration failed. Please try again.");
+        const data = await response.json();
+        if (data?.authToken) {
+          localStorage.setItem("token", data.authToken);
+          toast.success("Registration successful!");
+          navigate("/login");
+        } else if (data?.error) {
+          toast.error(data.error);
+        } else {
+          toast.error("Registration failed. Please try again.");
+        }
+      } catch (error) {
+        console.error("Error:", error);
+        toast.error("An unexpected error occurred");
+      } finally {
+        setLoading(false);
       }
-    } catch (error) {
-      console.error("Registration Error:", error);
-      const errorMessage = error.response?.data?.error || "Registration failed. Please try again.";
-      toast.error(errorMessage);
-    } finally {
-      setLoading(false);
     }
-  }
-};
+  };
   return (
     <div>
         <div className='flex flex-col min-h-screen bg-[#780000] font-sans'>
